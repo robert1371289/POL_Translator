@@ -1,7 +1,7 @@
 # translator-pol
 
-My translator!
+Mój tłumacz!
 
-This training app allows you to learn words from other languages!
+Ta aplikacja szkoleniowa pozwala uczyć się słów z innych języków!
 
-Оpen the main.py file and take a good look at the code!
+Otwórz plik main.py i przyjrzyj się dobrze kodowi!
