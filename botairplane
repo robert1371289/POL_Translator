@@ -1,0 +1,50 @@
+import discord
+import random
+from discord.ext import commands
+import os 
+
+intents = discord.Intents.default()
+intents.message_content = True
+
+bot = commands.Bot(command_prefix='$', intents=intents)
+
+# Mapa przypisująca opisy do nazw plików obrazków
+opisy_obrazkow = {
+    'pexels-bruno-silva-17758065.jpg': 'To jest pierwszy obrazek. Jest to torebka, ktora lezy na plazy. Ma na sobie jakis napis, ktory prawdopodobnie brzmi: Its difficult, but sa foda,',
+    'pexels-lanyjade-mondou-18173019.jpg': 'To jest drugi obrazek. Pokazuje dwa lizaki. Jeden rozowy (z lewej), drugi bialy (z prawej). Znajduja sie na niebie, wokol roznych chmur.',
+    'pexels-leebertee-18160979.jpg': 'To jest trzeci obrazek. Widzimy na nim ciemno-skorego pana w bialych ubraniach z okularami i bez wlosow. Na obrazku widzac jakby lewitowal poprzez jeden z trikow iluzji.'
+    # Dodaj więcej opisów w miarę potrzeb
+}
+
+@bot.event
+async def on_ready():
+    print(f'Zalogowaliśmy się jako {bot.user}')
+
+@bot.command()
+async def czesc(ctx):
+    await ctx.send(f'Siemka, jestem {bot.user}, miło cię poznać!')
+
+@bot.command()
+async def heh(ctx, count_heh=5):
+    await ctx.send("he" * count_heh)
+
+@bot.command()
+async def obrazek(ctx):
+    obrazki_folder = 'obrazki'
+    xy = random.choice(os.listdir(obrazki_folder))
+
+    opis_obrazka = opisy_obrazkow.get(xy, 'Brak opisu dla tego obrazka.')
+
+    with open(f'{obrazki_folder}/{xy}', 'rb') as f:
+        # Zapiszmy przekonwertowany plik biblioteki Discord w tej zmiennej!
+        picture = discord.File(f)
+
+    # Możemy następnie wysłać ten plik jako parametr wraz z opisem!
+    await ctx.send(opis_obrazka, file=picture)
+
+@bot.command()
+async def pomoc(ctx):
+    commands_list = [f'`{command.name}`' for command in bot.commands]
+    await ctx.send(f'**Dostępne komendy**: {", ".join(commands_list)}')
+
+bot.run("MTIwMDQ3NDk5MjI5OTczNzI2OQ.Gksr6J.y9J3IftF61j8WLP5x8dnRZNlXBmUDkeb-UYI_0")
